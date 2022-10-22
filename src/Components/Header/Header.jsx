@@ -12,9 +12,12 @@ const Header = (props) => {
                 </div>
             </div>
             <ul className='d-flex'>
-                <li className='mr-30 cu-p' onClick={props.onClickOpen}>
+                <li className='mr-15 cu-p' onClick={props.onClickOpen}>
                  <img width={24} height={24} src='/cart.svg' alt='cart'/>
                     <span className='p-10'> 1202 сом </span>
+                </li>
+                <li className='mr-20 cu-p'>
+                    <img width={24} height={24} src="/heartNotAdd.svg" alt="heart"/>
                 </li>
                 <li>
                     <img width={24} height={24} src='/user.svg' alt='user'/>
