@@ -43,8 +43,8 @@ const RightBar = ({onClickClose, items = [], onClickDelete}) => {
                             <img className='mb-20' width={200} height={200} src="/inbox.svg" alt="inbox"/>
                             <h2>Корзина пустая</h2>
                             <p className='opacity-6'>Добавьте хотя бы одну вещь, чтобы сделать заказ. ПЖ</p>
-                            <button onClick={onClickClose} className='greenButton'>  <img src="/Arrow.svg" alt="Arrow"/> Вернуться назад
-
+                            <button onClick={onClickClose} className='greenButton'>
+                                <img src="/Arrow.svg" alt="Arrow"/> Вернуться назад
                             </button>
                         </div>
                     )}
