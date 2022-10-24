@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const RightBar = ({onClickClose, items = [], onClickDelete}) => {
+const RightBar = ({onClickClose, items = [], onClickDelete,}) => {
     return (
         <div className='overlay'>
             <div className='right-bar'>
@@ -9,19 +9,17 @@ const RightBar = ({onClickClose, items = [], onClickDelete}) => {
                     Корзина <img className='removeBtn cu-p' src="/btn-remove.svg" alt="Remove" onClick={onClickClose}/>
                 </h2>
                 {items.length > 0 ? (<div>
-                        <div className='items'>
-                            {items.map((obj) => (
-                                <div className="cartItems d-flex align-center mb-20">
-                                    <img width={75} height={75} src={obj.imgURL} alt="Wears"/>
-                                    <div className='mr-20'>
-                                        <p className='mb-5'>{obj.title}</p>
-                                        <b> {obj.price} сом </b>
-                                    </div>
-                                    <img onClick={() => onClickDelete(obj.id)} className='removeBtn' src="/btn-remove.svg"
-                                         alt="Remove"/>
+                        {items.map((obj) => (
+                            <div key={obj.id} className="cartItems d-flex align-center mb-20">
+                                <img width={75} height={75} src={obj.imgURL} alt="Wears"/>
+                                <div className='mr-20'>
+                                    <p className='mb-5'>{obj.title}</p>
+                                    <b> {obj.price} сом </b>
                                 </div>
-                            ))}
-                        </div>
+                                <img onClick={() => onClickDelete(obj.id)} className='removeBtn' src="/btn-remove.svg"
+                                     alt="Remove"/>
+                            </div>
+                        ))}
                         <div className="cartTotalBlock">
                             <ul>
                                 <li>

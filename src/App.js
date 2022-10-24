@@ -32,8 +32,14 @@ function App() {
     }, [])
 
     const addToCart = (obj) => {
-        setCartItems(prev => [...prev, obj])
-        axios.post('https://6352a192a9f3f34c3744fa0c.mockapi.io/cart', obj)
+        if (cartItems.find((items) => Number(items.id) === Number(obj.id))) {
+            axios.delete(`https://6352a192a9f3f34c3744fa0c.mockapi.io/cart/${obj.id}`)
+            setCartItems((prev) => prev.filter(items =>Number(items.id) !== Number(obj.id)))
+        } else {
+            axios.post('https://6352a192a9f3f34c3744fa0c.mockapi.io/cart', obj)
+            setCartItems((prev) => [...prev,obj])
+        }
+
     }
 
     const onChangeSearch = (event) => {
@@ -47,14 +53,17 @@ function App() {
 
 
     const addToFavorite = async (obj) => {
-        if (favoriteItems.find((favObj) => favObj.id === obj.id)) {
-            axios.delete(`https://6352a192a9f3f34c3744fa0c.mockapi.io/favorites/${obj.id}`)
-            setFavoriteItems((prev) => prev.filter(items => items.id !== obj.id))
-        } else {
-           const {data} = await axios.post('https://6352a192a9f3f34c3744fa0c.mockapi.io/favorites', obj)
-            setFavoriteItems(prev => [...prev, data])
+        try { //Проверка на ошибку, try- выполни это действие если не выполниться то выполни catch
+            if (favoriteItems.find((favObj) => favObj.id === obj.id)) {
+                axios.delete(`https://6352a192a9f3f34c3744fa0c.mockapi.io/favorites/${obj.id}`)
+                setFavoriteItems((prev) => prev.filter(items => items.id !== obj.id))
+            } else {
+                const {data} = await axios.post('https://6352a192a9f3f34c3744fa0c.mockapi.io/favorites', obj)
+                setFavoriteItems(prev => [...prev, data])
+            }
+        } catch (error) {
+            alert('Не удалось добавить')
         }
-
     }
 
     return (
