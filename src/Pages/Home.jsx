@@ -13,7 +13,7 @@ const Home = (props) => {
                                                className='clear cu-p'
                                                src="/btn-remove.svg"
                                                alt="Clear"/>}
-                    <input onChange={props.onChangeSearch} value={props.searchValue} placeholder='Найти...'/>
+                    <input onChange={props.onChangeSearch} value={props.searchValue} placeholder='Найти....'/>
                 </div>
             </div>
 
