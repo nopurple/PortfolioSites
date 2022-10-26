@@ -3,6 +3,19 @@ import Card from "../Components/Card/Card";
 
 
 const Home = (props) => {
+    const renderItems = () => {
+        const filtredItems = props.items.filter(items => items.title.toLowerCase().includes(props.searchValue.toLowerCase()))
+        return (props.isLoading ? [...Array(12)] : filtredItems).map((item, index) => (
+                <Card key={index}
+                      onFavorite={(obj)=> props.addToFavorite(obj)}
+                      onPlus={(obj)=> props.addToCart(obj)}
+                      added={props.cartItems.some((obj) => Number(obj.id) === Number(item.id))} // some- если одно из условий верно то выполни
+                      loading={props.isLoading}
+                      {...item}/>
+            )
+        )
+    }
+
     return (
         <div className="content p-35">
             <div className='d-flex align-center justify-between mb-40'>
@@ -16,15 +29,8 @@ const Home = (props) => {
                     <input onChange={props.onChangeSearch} value={props.searchValue} placeholder='Найти....'/>
                 </div>
             </div>
-
             <div className='d-flex flex-wrap'>
-                {props.items.filter(items => items.title.toLowerCase().includes(props.searchValue.toLowerCase()))
-                    .map((item, index) => (
-                        <Card key={index}
-                              onFavorite={props.addToFavorite}
-                              onPlus={props.addToCart}
-                              {...item}/>
-                    ))}
+                {renderItems()}
             </div>
         </div>)
 }
