@@ -3,8 +3,8 @@ import Card from "../Components/Card/Card";
 import {Link} from "react-router-dom";
 import {AppContext} from "../App";
 
-const Favorite = ({addToFavorite}) => {
- const {favoriteItems} = useContext(AppContext)
+const Favorite = () => {
+ const {favoriteItems,addToFavorite} = useContext(AppContext)
 
     return (
         <div className="content p-35">
@@ -17,7 +17,7 @@ const Favorite = ({addToFavorite}) => {
                         {favoriteItems.map((item, index) => (
                             <Card key={index}
                                   onFavorite={addToFavorite}
-                                  favorited={true}
+                                  favorites={true}
                                   {...item}/>
                         ))}
                     </div>)

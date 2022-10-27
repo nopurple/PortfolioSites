@@ -21,8 +21,7 @@ function App() {
 
 
     useEffect(() => {
-        async function fetchData() {
-
+        const fetchData = async () =>{
             const CartResponse = await axios.get('https://6352a192a9f3f34c3744fa0c.mockapi.io/cart');
             const FavoritesResponse = await axios.get('https://6352a192a9f3f34c3744fa0c.mockapi.io/favorites');
             const ItemResponse = await axios.get('https://6352a192a9f3f34c3744fa0c.mockapi.io/items');
@@ -33,18 +32,17 @@ function App() {
             setItems(ItemResponse.data)
         }
 
-        fetchData();
+        fetchData().then(r => r);
     }, [])
 
     const addToCart = (obj) => {
         if (cartItems.find((items) => Number(items.id) === Number(obj.id))) {
             axios.delete(`https://6352a192a9f3f34c3744fa0c.mockapi.io/cart/${obj.id}`)
-            setCartItems((prev) => prev.filter(items => Number(items.id) !== Number(obj.id)))
+            setCartItems((prev) => prev.filter((items) => Number(items.id) !== Number(obj.id)))
         } else {
             axios.post('https://6352a192a9f3f34c3744fa0c.mockapi.io/cart', obj)
             setCartItems((prev) => [...prev, obj])
         }
-
     }
 
     const onChangeSearch = (event) => {
@@ -60,7 +58,8 @@ function App() {
         try { //Проверка на ошибку, try- выполни это действие если не выполниться то выполни catch
             if (favoriteItems.find((favObj) => favObj.id === obj.id)) {
                 axios.delete(`https://6352a192a9f3f34c3744fa0c.mockapi.io/favorites/${obj.id}`)
-                setFavoriteItems((prev) => prev.filter(items => items.id !== obj.id))
+                setFavoriteItems((prev) => prev.filter(items => Number(items.id) !== Number(obj.id)))
+
             } else {
                 const {data} = await axios.post('https://6352a192a9f3f34c3744fa0c.mockapi.io/favorites', obj)
                 setFavoriteItems(prev => [...prev, data])
@@ -70,8 +69,16 @@ function App() {
         }
     }
 
+    const isItemsAdded = (id) => {
+        return cartItems.some((obj) => Number(obj.id) === Number(id))// some- если одно из условий верно то выполни
+    }
+
+    const isFavoriteAdded = (id) => {
+        return favoriteItems.some((obj) => Number(obj.id) === Number(id))
+    }
+
     return (
-        <AppContext.Provider value={{items,cartItems ,favoriteItems}}>
+        <AppContext.Provider value={{items, cartItems, favoriteItems, isItemsAdded,isFavoriteAdded, addToFavorite,setCartItems}}>
             <div className='wrapper clear'>
                 {cartOpen &&
                     <RightBar onClickDelete={onDeleteItems} items={cartItems} onClickClose={() => {
@@ -85,7 +92,7 @@ function App() {
                                                    setSearchValue={setSearchValue} onChangeSearch={onChangeSearch}
                                                    addToFavorite={addToFavorite} addToCart={addToCart}
                                                    cartItems={cartItems} isLoading={isLoading}/>}/>
-                    <Route path='/favorites' element={<Favorite addToFavorite={addToFavorite}/>}/>
+                    <Route path='/favorites' element={<Favorite/>}/>
                 </Routes>
             </div>
 
