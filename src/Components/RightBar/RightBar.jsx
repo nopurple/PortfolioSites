@@ -1,20 +1,21 @@
 import React, {useContext, useState} from "react";
 import {AppContext} from "../../App";
 import axios from "axios";
-import {Link} from "react-router-dom";
+
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const RightBar = ({onClickClose, items = [], onClickDelete,}) => {
 
     const {cartItems, setCartItems} = useContext(AppContext);
-    const [OrderId, setOrderId] = useState(null)
+    const [orderId, setOrderId] = useState(null)
     const [OrderComplete, setOrderComplete] = useState(false)
 
 
     const onClickOrder = async () => {
         try {
-            const {data} = await axios.post('https://6352a192a9f3f34c3744fa0c.mockapi.io/orders', {items: cartItems})
+            const {data} = await axios.post('https://6352a192a9f3f34c3744fa0c.mockapi.io/orders',
+                {items: cartItems,})
             setOrderId(data.id)
             setOrderComplete(true)
             setCartItems([])
@@ -57,12 +58,12 @@ const RightBar = ({onClickClose, items = [], onClickDelete,}) => {
                                             <li>
                                                 <span>Итог:</span>
                                                 <div></div>
-                                                <b> 10000 сом </b>
+                                                <b> {cartItems.reduce((sum, obj) => obj.price + sum, 0)} сом </b>
                                             </li>
                                             <li>
                                                 <span>НДС 5%:</span>
                                                 <div></div>
-                                                <b>5 000 сом </b>
+                                                <b>{cartItems.reduce((sum,obj) => obj.price + sum * 0.5,0)} </b>
                                             </li>
                                         </ul>
                                         <button onClick={onClickOrder} className='greenButton'>Оформить заказ <img
@@ -75,15 +76,13 @@ const RightBar = ({onClickClose, items = [], onClickDelete,}) => {
                     )
                     :
                     (OrderComplete ? (
-                        <div className='cartOutBox d-flex align-center justify-center flex-column flex'>
+                        <div className='cartInbox d-flex align-center justify-center flex-column flex'>
                             <img className='mb-20' width={200} height={200} src="/delivery-complete.svg" alt="inbox"/>
                             <h2>Заказ оформлен!</h2>
-                            <p className='opacity-6'>Ваш заказ #{OrderId} скоро будет передан курьеру или доставке</p>
-                            <Link to="/orders" className='greenButton'>
+                            <p className='opacity-6'>Ваш заказ #{orderId} скоро будет передан курьеру или доставке</p>
                             <button onClick={onClickClose} className='greenButton'>
-                                <img src="/Arrow.svg" alt="Arrow"/> Перейти к доставке
+                                <img src="/Arrow.svg" alt="Arrow"/> Вернуться на главную
                             </button>
-                            </Link>
                         </div>
                     ) : (
                         <div className='cartInbox d-flex align-center justify-center flex-column flex'>
@@ -99,3 +98,6 @@ const RightBar = ({onClickClose, items = [], onClickDelete,}) => {
     )
 }
 export default RightBar;
+
+
+
