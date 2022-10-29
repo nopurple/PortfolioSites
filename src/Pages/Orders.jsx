@@ -1,10 +1,9 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Card from "../Components/Card/Card";
 import axios from "axios";
-import {AppContext} from "../App";
+
 
 const Orders = () => {
-    const {addToCart, items} = useContext(AppContext)
     const [orderItems, setOrderItems] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
@@ -20,7 +19,7 @@ const Orders = () => {
                 }
             })();
         }, []);
-console.log(orderItems);
+
     return (
         <div className="content p-35">
             <div className='d-flex align-center justify-between mb-40'>
@@ -29,7 +28,6 @@ console.log(orderItems);
             <div className='d-flex flex-wrap'>
                 {(isLoading ? [...Array(4)] : orderItems).map((items, index) => (
                     <Card key={index}
-                          onPlus={(obj) => addToCart(obj)}
                           loading={isLoading}
                         {...items}/>
                 ))}
