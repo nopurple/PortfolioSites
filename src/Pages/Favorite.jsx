@@ -11,7 +11,6 @@ const Favorite = () => {
             <div className='d-flex align-center justify-between mb-40'>
                 <h1>Мое избранное</h1>
             </div>
-
             {favoriteItems.length > 0 ? (
                     <div className='d-flex flex-wrap'>
                         {favoriteItems.map((item, index) => (
@@ -33,8 +32,6 @@ const Favorite = () => {
                 </div>
                 )
             }
-
-
         </div>
     )
 }

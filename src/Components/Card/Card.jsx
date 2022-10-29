@@ -5,19 +5,19 @@ import {AppContext} from "../../App";
 
 const Card = ({imgURL, id, title, price, onPlus, onFavorite, loading = false}) => {
 
+    const {isItemsAdded, isFavoriteAdded} = useContext(AppContext);
+    const obj = {id, parentId: id, title, imgURL, price}
 
-    const {isItemsAdded,isFavoriteAdded} = useContext(AppContext);
     const onClickPlus = () => {
-        onPlus({imgURL, title, price, id});
+        onPlus(obj);
     }
     const onClickFavorite = () => {
-        onFavorite({imgURL, title, price, id});
+        onFavorite(obj);
     }
 
 
     return (
         <div className={styles.card}>
-
             {loading ? <ContentLoader
                     speed={2}
                     width={155}
@@ -34,8 +34,10 @@ const Card = ({imgURL, id, title, price, onPlus, onFavorite, loading = false}) =
                 </ContentLoader> :
                 <> {/* фрагмент создает родительский (div)*/}
                     <div className={styles.Favorites}>
-                        <img onClick={onClickFavorite} width={30} height={30}
-                             src={isFavoriteAdded(id) ? "/Favorite-like.svg" : '/Favorite-unlike.svg'} alt="Favorite"/>
+                        {onFavorite && <img onClick={onClickFavorite} width={30} height={30}
+                                            src={isFavoriteAdded(id) ? "/Favorite-like.svg" : '/Favorite-unlike.svg'}
+                                            alt="Favorite"/>
+                        }
                     </div>
                     <img width={155} height={155} src={imgURL} alt='wear'/>
                     <h5>{title}</h5>
@@ -44,9 +46,10 @@ const Card = ({imgURL, id, title, price, onPlus, onFavorite, loading = false}) =
                             <span>Цена: </span>
                             <b> {price} сом</b>
                         </div>
-                        <img className={styles.plus} width={30} height={30}
-                             onClick={onClickPlus} src={isItemsAdded(id) ? 'buttonAdded.svg' : 'buttonAdd.svg'} alt='Plus'/>
-                    </div>
+                        {onPlus && <img className={styles.plus} width={30} height={30}
+                                        onClick={onClickPlus}
+                                        src={isItemsAdded(id) ? 'buttonAdded.svg' : 'buttonAdd.svg'} alt='Plus'/>
+                        }</div>
                 </>
             }
 
